@@ -1,6 +1,7 @@
 package com.example.mz.user.entity;
 
 import com.example.mz.career.entity.Career;
+import com.example.mz.user.dto.UserRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,4 +32,22 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "userId")
     private List<Career> career;
+
+    public static User create(final UserRequestDto.Create request){
+        return User.builder()
+                .name(request.getName())
+                .email(request.getEmail())
+                .school(request.getSchool())
+                .semester(request.getSemester())
+                .enroll(request.getEnroll())
+                .graduate(request.isGraduate())
+                .age(request.getAge())
+                .grade(request.getGrade())
+                .major(request.getMajor())
+                .path(request.getPath())
+                .military(request.isMilitary())
+                .build();
+    }
+
+    public static User update(){}
 }

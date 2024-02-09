@@ -16,7 +16,7 @@ public class CareerController {
 
     @PostMapping("")
     @Operation(description = "이력 등록하는 controller. " +
-            "대외활동, 공모전, 인턴, 자격증, 교내활동 중 하나를 careerName으로, 카테고리들을 List<String>으로 저장합니다")
+            "대외활동, 공모전, 인턴, 자격증, 교내활동들을 type으로, 각 활동 이름을 careerName, 카테고리들을 List<String>으로 저장합니다")
     public ResponseEntity<?> add(@RequestBody CareerRequestDto.Create careerRequestDto){
         careerService.addCareer(careerRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
