@@ -2,6 +2,8 @@ package com.example.mz.career.entity;
 
 import com.example.mz.career.dto.CareerRequestDto;
 import com.example.mz.global.converter.ArrayConverter;
+import com.example.mz.user.entity.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -16,6 +18,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@ToString(exclude = "user")
 public class Career {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,9 +29,12 @@ public class Career {
     private List<String> categories;
     private LocalDate start;
     private LocalDate end;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId")
+    @JsonIgnore
+    private User user;
 
-
-    public static Career create(final @NotNull CareerRequestDto.Create request){
+    public static Career create(final @NotNull CareerRequestDto.CreateCareer request){
         return Career.builder()
                 .careerName(request.getCareerName())
                 .type(request.getType())
