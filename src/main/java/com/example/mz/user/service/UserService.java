@@ -19,9 +19,9 @@ public class UserService {
                 .id(user.getId()).build();
     }
 
-    public void updateUser(Long id, UserRequestDto.Create userRequestDto) {
+    public void updateUser(Long id, UserRequestDto.Update userRequestDto) {
         User user = userRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다."));
-        user.update(userRequestDto);
+        userRequestDto.updateEntity(user);
         userRepo.save(user);
     }
 }

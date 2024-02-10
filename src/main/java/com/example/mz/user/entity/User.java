@@ -22,12 +22,12 @@ public class User {
     private String school;
     private Long semester;
     private String enroll;
-    private boolean graduate;
+    private Boolean graduate;
     private Long age;
     private float grade;
     private String major;
     private String path;
-    private boolean military;
+    private Boolean military;
 
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "userId")
@@ -49,5 +49,19 @@ public class User {
                 .build();
     }
 
-    public static User update(){}
+    public static User update(final UserRequestDto.Update request){
+        return User.builder()
+                .name(request.getName())
+                .email(request.getEmail())
+                .school(request.getSchool())
+                .semester(request.getSemester())
+                .enroll(request.getEnroll())
+                .graduate(request.getGraduate())
+                .age(request.getAge())
+                .grade(request.getGrade())
+                .major(request.getMajor())
+                .path(request.getPath())
+                .military(request.getMilitary())
+                .build();
+    }
 }

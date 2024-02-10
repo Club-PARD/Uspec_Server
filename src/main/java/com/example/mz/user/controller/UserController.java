@@ -20,7 +20,7 @@ public class UserController {
         return new ResponseEntity<>(ret,HttpStatus.OK);
     }
     @PatchMapping("/{id}")
-    public ResponseEntity<UserRequestDto.Create> update(@PathVariable Long id, @RequestBody UserRequestDto.Create userRequestDto){
+    public ResponseEntity<UserRequestDto.Create> update(@PathVariable Long id, @RequestBody UserRequestDto.Update userRequestDto){
         userService.updateUser(id, userRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
