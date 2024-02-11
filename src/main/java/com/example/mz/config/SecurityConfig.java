@@ -12,7 +12,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(securedEnabled = true)
+@EnableMethodSecurity(securedEnabled = true,prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -25,7 +25,8 @@ public class SecurityConfig {
         http.addFilter(corsConfig.corsFilter());
         http.authorizeHttpRequests(au -> au.anyRequest().permitAll());
         http.oauth2Login(
-                oauth -> oauth.loginPage("/loginForm")
+                oauth ->
+                        oauth.loginPage("/loginForm")
                         .defaultSuccessUrl("/home")
                         .userInfoEndpoint()
                         .userService(principalOauth2UserService)
