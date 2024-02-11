@@ -1,9 +1,14 @@
 package com.example.mz.user.dto;
 
+import com.example.mz.career.entity.Career;
 import com.example.mz.user.entity.User;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 public class UserRequestDto {
     @Getter
@@ -21,6 +26,21 @@ public class UserRequestDto {
         private String major;
         private String path;
         private boolean military;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class Read{
+        private String name;
+        private String school;
+        private Long semester;
+        private String enroll;
+        private boolean graduate;
+        private String major;
+        private String path;
+        private List<Career> careers;
     }
     @Getter
     @Setter

@@ -64,4 +64,17 @@ public class User {
                 .military(request.getMilitary())
                 .build();
     }
+
+    public static UserRequestDto.Read read(final User user){
+        return UserRequestDto.Read.builder()
+                .name(user.getName())
+                .school(user.getSchool())
+                .semester(user.getSemester())
+                .enroll(user.getEnroll())
+                .graduate(user.getGraduate())
+                .major(user.getMajor())
+                .path(user.getPath())
+                .careers(user.getCareer())
+                .build();
+    }
 }

@@ -24,4 +24,9 @@ public class UserService {
         userRequestDto.updateEntity(user);
         userRepo.save(user);
     }
+
+    public UserRequestDto.Read readUser(Long id) {
+        User user = userRepo.findById(id).orElseThrow(()-> new IllegalArgumentException("해당 사용자가 없습니다."));
+        return User.read(user);
+    }
 }

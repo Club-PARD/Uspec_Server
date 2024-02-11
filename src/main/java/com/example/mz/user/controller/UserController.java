@@ -24,4 +24,10 @@ public class UserController {
         userService.updateUser(id, userRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserRequestDto.Read> read(@PathVariable Long id){
+        UserRequestDto.Read ret = userService.readUser(id);
+        return new ResponseEntity<>(ret,HttpStatus.OK);
+    }
 }
