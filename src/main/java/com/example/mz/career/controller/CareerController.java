@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class CareerController {
     }
 
     @GetMapping("/{id}/type/top3")
+//    @PreAuthorize("hasRole('ROLE_CAREER')")
     @Operation(description = "user의 분야에서 이력 상위 3개와 전체 대비 비율을 가져오는 컨트롤러")
     public ResponseEntity<List<CareerRequestDto.CareerSummary>> getTop3WithPercentage(@PathVariable Long id){
         List<CareerRequestDto.CareerSummary> topCareersWithPercentage = careerService.getTop3WithPercentage(id);
@@ -39,6 +41,7 @@ public class CareerController {
 
     @GetMapping("/{id}/rank/spec")
     @Operation(description = "이 분야 상위 3명 스펙 랭킹 보여주는 컨트롤러")
+//    @PreAuthorize("hasRole('ROLE_CAREER')")
     public ResponseEntity<List<CareerRequestDto.UserSpecRank>> getTop3UserBySpecRank(@PathVariable Long id){
         List<CareerRequestDto.UserSpecRank> ret = careerService.getTop3UserBySpecRank(id);
         return new ResponseEntity<>(ret,HttpStatus.OK);

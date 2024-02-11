@@ -25,6 +25,7 @@ public class CareerService {
     
     public void addCareer(Long userId,CareerRequestDto.CreateCareer careerRequestDto) {
         User user = userRepo.findById(userId).orElseThrow(()->new IllegalArgumentException("해당 유저가 없습니다"));
+        user.setRole("ROLE_CAREER"); //이력 작성하면 ROLE_CAREER로 변경
         Career career = Career.create(careerRequestDto);
         career.setUser(user);
         careerRepo.save(career);

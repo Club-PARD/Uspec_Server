@@ -28,6 +28,8 @@ public class User {
     private String major;
     private String path;
     private Boolean military;
+//    회원가입만 하면 ROLE_USER, 이력 작성하면 ROLE_CAREER
+    private String role;
 
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "userId")
@@ -46,6 +48,7 @@ public class User {
                 .major(request.getMajor())
                 .path(request.getPath())
                 .military(request.isMilitary())
+                .role("ROLE_USER")
                 .build();
     }
 
@@ -68,6 +71,7 @@ public class User {
     public static UserRequestDto.Read read(final User user){
         return UserRequestDto.Read.builder()
                 .name(user.getName())
+                .role(user.getRole())
                 .school(user.getSchool())
                 .semester(user.getSemester())
                 .enroll(user.getEnroll())

@@ -26,6 +26,7 @@ public class UserRequestDto {
         private String major;
         private String path;
         private boolean military;
+        private String role;
     }
 
     @Getter
@@ -34,6 +35,7 @@ public class UserRequestDto {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class Read{
         private String name;
+        private String role;
         private String school;
         private Long semester;
         private String enroll;
