@@ -2,6 +2,7 @@ package com.example.mz.career.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,13 +24,26 @@ public class CareerRequestDto {
     }
 
     @Getter
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public static class Read{
-        private Long careerId;
+    @AllArgsConstructor
+    public static class CareerSummary {
         private String type;
-        private String careerName;
-        private List<String> categories;
-        private LocalDate start;
-        private LocalDate end;
+        private long count;
+        private double percentage;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class CareerNameSummary {
+        private String type;
+        private String category;
+        private long count;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class UserSpecRank{
+        private String name;
+        private String enroll;
+        private Long careerNum;
     }
 }

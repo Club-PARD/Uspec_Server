@@ -25,7 +25,11 @@ public class Career {
     private Long careerId;
     private String type;
     private String careerName;
-    @Convert(converter = ArrayConverter.class)
+//    @Convert(converter = ArrayConverter.class)
+//    private List<String> categories;
+    @ElementCollection
+    @CollectionTable(name = "career_categories", joinColumns = @JoinColumn(name = "careerId"))
+    @Column(name = "category")
     private List<String> categories;
     private LocalDate start;
     private LocalDate end;
