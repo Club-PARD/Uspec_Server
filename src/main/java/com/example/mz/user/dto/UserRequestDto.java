@@ -43,8 +43,8 @@ public class UserRequestDto {
         private boolean graduate;
         private String major;
         private String path;
-        private List<Career> careers;
         private String image;
+        private List<Career> careers;
     }
     @Getter
     @Setter
