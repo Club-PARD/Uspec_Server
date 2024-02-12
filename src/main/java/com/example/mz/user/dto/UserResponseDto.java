@@ -13,6 +13,12 @@ public class UserResponseDto {
 
     @Getter
     @Builder
+    public static class ImageRet{
+        private String imageUrl;
+    }
+
+    @Getter
+    @Builder
     @AllArgsConstructor
     public static class CareerInUser{
         private String careerName;
