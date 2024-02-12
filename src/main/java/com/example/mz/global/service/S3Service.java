@@ -1,6 +1,8 @@
 package com.example.mz.global.service;
 
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.example.mz.global.exception.CustomException;
+import com.example.mz.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +24,7 @@ public class S3Service {
     private String bucket;
 
     public String upload(MultipartFile multipartFile, String dirName) throws IOException {
-        File uploadFile = convert(multipartFile).orElseThrow(() -> new IllegalArgumentException("파일 변환에 실패했습니다"));
+        File uploadFile = convert(multipartFile).orElseThrow(() -> new CustomException(ExceptionCode.FILE_TRANSFORM_FAILED));
 
         return upload(uploadFile, dirName);
     }
