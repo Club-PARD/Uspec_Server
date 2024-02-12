@@ -3,6 +3,9 @@ package com.example.mz.user.dto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 public class UserResponseDto {
     @Getter
@@ -26,5 +29,14 @@ public class UserResponseDto {
         private String category;
         private String start;
         private String end;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    public static class UserCareerInfo{
+        private String name;
+        private String enroll;
+        private Long careerCount;
     }
 }

@@ -69,11 +69,11 @@ public class CareerService {
         User u = userRepo.findById(userId).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다"));
         List<Object[]> top3UserBySpecRank = careerRepo.findTop3UserBySpecRank(u.getPath(),top3User);
         return top3UserBySpecRank.stream().map(
-                user -> {
-                    String name = u.getName();
-                    String enroll = u.getEnroll();
-                    Long careerNum = (Long) user[1];
-                    return new CareerRequestDto.UserSpecRank(name, enroll, careerNum);
+                objects -> {
+                    Long userIdFromQuery = (Long) objects[0]; // 쿼리로부터 얻은 userId
+                    User user = userRepo.findById(userIdFromQuery).orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다: " + userIdFromQuery));
+                    Long careerNum = (Long) objects[1]; // Career의 개수
+                    return new CareerRequestDto.UserSpecRank(user.getName(), user.getEnroll(), careerNum);
                 }
         ).collect(Collectors.toList());
     }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,6 +39,12 @@ public class UserController {
     public ResponseEntity<UserResponseDto.ImageRet> uploadImage(@PathVariable Long id,@RequestPart MultipartFile image) throws IOException {
        UserResponseDto.ImageRet ret = userService.updateImage(id, image);
        return new ResponseEntity<>(ret,HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/scroll/{pageId}")
+    public ResponseEntity<?> getAllRankByScroll(@PathVariable Long id,@PathVariable int pageId){
+        List<UserResponseDto.UserCareerInfo> ret = userService.getUserBySpecRank(id,pageId);
+        return new ResponseEntity<>(ret,HttpStatus.OK);
     }
 
 }
