@@ -3,6 +3,8 @@ package com.example.mz.career.service;
 import com.example.mz.career.dto.CareerRequestDto;
 import com.example.mz.career.entity.Career;
 import com.example.mz.career.repo.CareerRepo;
+import com.example.mz.global.exception.CustomException;
+import com.example.mz.global.exception.ExceptionCode;
 import com.example.mz.user.entity.User;
 import com.example.mz.user.repo.UserRepo;
 import lombok.AllArgsConstructor;
@@ -24,7 +26,7 @@ public class CareerService {
     private final CareerRepo careerRepo;
     
     public void addCareer(Long userId,CareerRequestDto.CreateCareer careerRequestDto) {
-        User user = userRepo.findById(userId).orElseThrow(()->new IllegalArgumentException("해당 유저가 없습니다"));
+        User user = userRepo.findById(userId).orElseThrow(()->new CustomException(ExceptionCode.USERID_NOT_FOUND));
         user.setRole("ROLE_CAREER"); //이력 작성하면 ROLE_CAREER로 변경
         Career career = Career.create(careerRequestDto);
         career.setUser(user);
@@ -32,7 +34,7 @@ public class CareerService {
     }
 
     public List<CareerRequestDto.CareerSummary> getTop3WithPercentage(Long userId) {
-        User user = userRepo.findById(userId).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다"));
+        User user = userRepo.findById(userId).orElseThrow(() -> new CustomException(ExceptionCode.USERID_NOT_FOUND));
         long totalCareers = careerRepo.count(); //careerRepo에 있는 career의 총 갯수
         Pageable topThree =  PageRequest.of(0, 3); //첫번째 페이지에서 3개의 Pageable 객체를 가져오는 요청객체
         List<Object[]> results = careerRepo.findTopTypes(user.getPath(),topThree);
@@ -47,31 +49,33 @@ public class CareerService {
                 .collect(Collectors.toList());
     }
 
-//    public List<CareerRequestDto.CareerNameSummary> getTopTypeWithTop3CareerName() {
-//        // Find the most frequent type
-//        Pageable topTypePage = PageRequest.of(0, 1);
-//        List<Object[]> topTypeResult = careerRepo.findTopTypes(topTypePage);
-//        if (topTypeResult.isEmpty()) {
-//            return Collections.emptyList();
-//        }
-//        String mostType = (String) topTypeResult.get(0)[0];
-//
-//        Pageable top3Page = PageRequest.of(0, 3);
-//        List<Object[]> top3Categories = careerRepo.findTopCategoriesByType(mostType, top3Page);
-//
-//        return top3Categories.stream()
-//                .map(cn -> new CareerRequestDto.CareerNameSummary(mostType, (String) cn[0], (Long) cn[1]))
-//                .collect(Collectors.toList());
-//    }
+    public List<CareerRequestDto.CareerNameSummary> getTopTypeWithTop3CareerName(Long userId) {
+        User user = userRepo.findById(userId).orElseThrow(() -> new CustomException(ExceptionCode.USERID_NOT_FOUND));
+        Pageable topTypePage = PageRequest.of(0, 1);
+        List<Object[]> topTypeResult = careerRepo.findTopTypes(user.getPath(),topTypePage);
+        if (topTypeResult.isEmpty()) {
+            return Collections.emptyList();
+        }
+        String mostType = (String) topTypeResult.get(0)[0];
+
+        Pageable top3Page = PageRequest.of(0, 3);
+        List<Object[]> top3Categories = careerRepo.findTopCategoriesByType(mostType, top3Page);
+        return top3Categories.stream()
+                .map(objects -> {
+                    String category = (String) objects[0];
+                    long count = (Long) objects[1];
+                    return new CareerRequestDto.CareerNameSummary(mostType,category, count);
+                }).collect(Collectors.toList());
+    }
 
     public List<CareerRequestDto.UserSpecRank> getTop3UserBySpecRank(Long userId) {
         Pageable top3User = PageRequest.of(0, 3);
-        User u = userRepo.findById(userId).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다"));
+        User u = userRepo.findById(userId).orElseThrow(() -> new CustomException(ExceptionCode.USERID_NOT_FOUND));
         List<Object[]> top3UserBySpecRank = careerRepo.findTop3UserBySpecRank(u.getPath(),top3User);
         return top3UserBySpecRank.stream().map(
                 objects -> {
                     Long userIdFromQuery = (Long) objects[0]; // 쿼리로부터 얻은 userId
-                    User user = userRepo.findById(userIdFromQuery).orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다: " + userIdFromQuery));
+                    User user = userRepo.findById(userIdFromQuery).orElseThrow(() -> new CustomException(ExceptionCode.USERID_NOT_FOUND));
                     Long careerNum = (Long) objects[1]; // Career의 개수
                     return new CareerRequestDto.UserSpecRank(user.getName(), user.getEnroll(), careerNum);
                 }

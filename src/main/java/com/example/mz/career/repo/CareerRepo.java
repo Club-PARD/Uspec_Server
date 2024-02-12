@@ -21,7 +21,11 @@ public interface CareerRepo extends JpaRepository<Career,Long> {
     Page<Object[]> findMostTypes(Pageable pageable);
 
     //    특정 type에 대한 상위 category 찾는 쿼리
-    @Query(value = "SELECT cat.category, COUNT(cat.category) AS cnt FROM career_categories cat JOIN career c ON cat.career_id = c.id WHERE c.type = :type GROUP BY cat.category ORDER BY cnt DESC", nativeQuery = true)
+    @Query(value = "select category, count(category) as count" +
+            " from Career c join c.categories category" +
+            " where c.type = :type" +
+            " group by category" +
+            " order by count desc")
     List<Object[]> findTopCategoriesByType(@Param("type") String type, Pageable pageable);
 
     // 스펙갯수 제일 많은 3명의 user 찾는 쿼리

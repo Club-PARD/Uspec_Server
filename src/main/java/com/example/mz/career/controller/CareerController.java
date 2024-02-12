@@ -32,15 +32,15 @@ public class CareerController {
         return ResponseEntity.ok(topCareersWithPercentage);
     }
 
-//    @GetMapping("/type/category/top3")
-//    @Operation(description = "제일 높은 이력의 상위 카테고리 3래 가져오는 컨트롤러")
-//    public ResponseEntity<List<CareerRequestDto.CareerNameSummary> > getTopTypeWithTop3CareerName(){
-//        List<CareerRequestDto.CareerNameSummary> topTypeWithTop3CareerName = careerService.getTopTypeWithTop3CareerName();
-//        return ResponseEntity.ok(topTypeWithTop3CareerName);
-//    }
+    @GetMapping("/{id}/type/category/top3")
+    @Operation(description = "user의 분야에서 사람들이 제일 많이 한 이력활동 중 상위 카테고리 3개 가져오기")
+    public ResponseEntity<List<CareerRequestDto.CareerNameSummary>> getTopTypeWithTop3CareerName(@PathVariable Long id){
+        List<CareerRequestDto.CareerNameSummary> topTypeWithTop3CareerName = careerService.getTopTypeWithTop3CareerName(id);
+        return ResponseEntity.ok(topTypeWithTop3CareerName);
+    }
 
     @GetMapping("/{id}/rank/spec")
-    @Operation(description = "이 분야 상위 3명 스펙 랭킹 보여주는 컨트롤러")
+    @Operation(description = "user의 분야 상위 3명 스펙 랭킹 보여주는 컨트롤러")
 //    @PreAuthorize("hasRole('ROLE_CAREER')")
     public ResponseEntity<List<CareerRequestDto.UserSpecRank>> getTop3UserBySpecRank(@PathVariable Long id){
         List<CareerRequestDto.UserSpecRank> ret = careerService.getTop3UserBySpecRank(id);
