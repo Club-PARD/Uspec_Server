@@ -7,6 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,4 +33,11 @@ public class UserController {
         UserRequestDto.Read ret = userService.readUser(id);
         return new ResponseEntity<>(ret,HttpStatus.OK);
     }
+
+    @PostMapping(value = "/{id}/uploadImage", consumes = "multipart/form-data")
+    public ResponseEntity<UserResponseDto.ImageRet> uploadImage(@PathVariable Long id,@RequestPart MultipartFile image) throws IOException {
+       UserResponseDto.ImageRet ret = userService.updateImage(id, image);
+       return new ResponseEntity<>(ret,HttpStatus.OK);
+    }
+
 }

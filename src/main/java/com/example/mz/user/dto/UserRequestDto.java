@@ -27,6 +27,7 @@ public class UserRequestDto {
         private String path;
         private boolean military;
         private String role;
+        private String image;
     }
 
     @Getter
@@ -43,6 +44,7 @@ public class UserRequestDto {
         private String major;
         private String path;
         private List<Career> careers;
+        private String image;
     }
     @Getter
     @Setter
@@ -59,6 +61,7 @@ public class UserRequestDto {
         private String major;
         private String path;
         private Boolean military;
+        private String image;
         public void updateEntity(User user) {
             if (name != null) user.setName(this.name);
             if (email != null) user.setEmail(this.email);
@@ -71,6 +74,7 @@ public class UserRequestDto {
             if (major != null) user.setMajor(this.major);
             if (path != null) user.setPath(this.path);
             if(military != null ) user.setMilitary(this.military);
+            if(image != null) user.setImage(this.image);
         }
     }
 }

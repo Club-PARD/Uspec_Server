@@ -30,6 +30,8 @@ public class User {
     private Boolean military;
 //    회원가입만 하면 ROLE_USER, 이력 작성하면 ROLE_CAREER
     private String role;
+    @Column(columnDefinition = "BLOB",length = 1000)
+    private String image;
 
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "userId")
@@ -49,6 +51,7 @@ public class User {
                 .path(request.getPath())
                 .military(request.isMilitary())
                 .role("ROLE_USER")
+                .image(request.getImage())
                 .build();
     }
 
@@ -65,6 +68,7 @@ public class User {
                 .major(request.getMajor())
                 .path(request.getPath())
                 .military(request.getMilitary())
+                .image(request.getImage())
                 .build();
     }
 
@@ -79,6 +83,7 @@ public class User {
                 .major(user.getMajor())
                 .path(user.getPath())
                 .careers(user.getCareer())
+                .image(user.getImage())
                 .build();
     }
 }
