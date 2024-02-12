@@ -47,22 +47,24 @@ public class CareerService {
                 .collect(Collectors.toList());
     }
 
-//    public List<CareerRequestDto.CareerNameSummary> getTopTypeWithTop3CareerName() {
-//        // Find the most frequent type
-//        Pageable topTypePage = PageRequest.of(0, 1);
-//        List<Object[]> topTypeResult = careerRepo.findTopTypes(topTypePage);
-//        if (topTypeResult.isEmpty()) {
-//            return Collections.emptyList();
-//        }
-//        String mostType = (String) topTypeResult.get(0)[0];
-//
-//        Pageable top3Page = PageRequest.of(0, 3);
-//        List<Object[]> top3Categories = careerRepo.findTopCategoriesByType(mostType, top3Page);
-//
-//        return top3Categories.stream()
-//                .map(cn -> new CareerRequestDto.CareerNameSummary(mostType, (String) cn[0], (Long) cn[1]))
-//                .collect(Collectors.toList());
-//    }
+    public List<CareerRequestDto.CareerNameSummary> getTopTypeWithTop3CareerName(Long userId) {
+        User user = userRepo.findById(userId).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다"));
+        Pageable topTypePage = PageRequest.of(0, 1);
+        List<Object[]> topTypeResult = careerRepo.findTopTypes(user.getPath(),topTypePage);
+        if (topTypeResult.isEmpty()) {
+            return Collections.emptyList();
+        }
+        String mostType = (String) topTypeResult.get(0)[0];
+
+        Pageable top3Page = PageRequest.of(0, 3);
+        List<Object[]> top3Categories = careerRepo.findTopCategoriesByType(mostType, top3Page);
+        return top3Categories.stream()
+                .map(objects -> {
+                    String category = (String) objects[0];
+                    long count = (Long) objects[1];
+                    return new CareerRequestDto.CareerNameSummary(mostType,category, count);
+                }).collect(Collectors.toList());
+    }
 
     public List<CareerRequestDto.UserSpecRank> getTop3UserBySpecRank(Long userId) {
         Pageable top3User = PageRequest.of(0, 3);
