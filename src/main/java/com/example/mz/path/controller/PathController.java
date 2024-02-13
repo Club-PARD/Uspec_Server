@@ -17,9 +17,9 @@ public class PathController {
         PathResponseDto.PathRet ret = pathService.readPath(path);
         return new ResponseEntity<>(ret, HttpStatus.OK);
     }
-    @PostMapping("/path")
-    public ResponseEntity<?> createPath(@RequestBody PathResponseDto.PathReq req){
-        pathService.createPath(req);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+//    @PostMapping("/path")
+//    public ResponseEntity<?> createPath(@RequestBody PathResponseDto.PathReq req){
+//        pathService.createPath(req);
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
 }
