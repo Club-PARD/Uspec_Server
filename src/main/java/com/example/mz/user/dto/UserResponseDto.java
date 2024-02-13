@@ -16,6 +16,12 @@ public class UserResponseDto {
 
     @Getter
     @Builder
+    public static class PathRet{
+        private List<String> pathCategory;
+    }
+
+    @Getter
+    @Builder
     public static class ImageRet{
         private String imageUrl;
     }
