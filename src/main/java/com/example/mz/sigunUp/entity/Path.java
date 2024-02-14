@@ -1,7 +1,5 @@
-package com.example.mz.path.entity;
+package com.example.mz.sigunUp.entity;
 
-import com.example.mz.global.converter.ArrayConverter;
-import com.example.mz.path.dto.PathResponseDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.Map;
 
 @Entity
 @Getter
