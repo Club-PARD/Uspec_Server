@@ -3,6 +3,7 @@ package com.example.mz.sigunUp.controller;
 import com.example.mz.sigunUp.dto.SignUpResponseDto;
 import com.example.mz.sigunUp.service.SignUpService;
 import com.example.mz.user.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,14 +20,16 @@ public class SignUpController {
     private final UserService userService;
 
     @GetMapping("/option")
+    @Operation(summary = "분야에 대한 카테고리 조회")
     public ResponseEntity<SignUpResponseDto.PathRet> readPath(@RequestParam("path") String path){
         SignUpResponseDto.PathRet ret = signUpService.readPath(path);
         return new ResponseEntity<>(ret, HttpStatus.OK);
     }
     @PostMapping("/{school}")
-    public ResponseEntity<SignUpResponseDto.SchoolRet> getSchool(/*@RequestBody PathResponseDto.SchoolReq req*/@PathVariable String school) throws Exception {
+    @Operation(summary = "학교에 대한 정보 조회")
+    public ResponseEntity<List<SignUpResponseDto.SchoolRet>> getSchool(/*@RequestBody PathResponseDto.SchoolReq req*/@PathVariable String school) throws Exception {
 //        signUpService.getSchool(req);
-        SignUpResponseDto.SchoolRet ret = signUpService.getStringSchool(school);
+        List<SignUpResponseDto.SchoolRet> ret = signUpService.getStringSchool(school);
         return new ResponseEntity<>(ret,HttpStatus.OK);
     }
 //    @PostMapping("/path")

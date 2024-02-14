@@ -24,6 +24,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.w3c.dom.Element;
 
 @Service
@@ -59,11 +62,11 @@ public class SignUpService {
 
         return result.toString();
     }
-    public SignUpResponseDto.SchoolRet getStringSchool(String school) throws Exception {
+    public List<SignUpResponseDto.SchoolRet> getStringSchool(String school) throws Exception {
         StringBuilder result = new StringBuilder();
         String encodedSchool = java.net.URLEncoder.encode(school, StandardCharsets.UTF_8);
 
-        String urlStr = "https://www.career.go.kr/cnet/openapi/getOpenApi.json?apiKey="+careerApiKey+"&svcType=api&svcCode=SCHOOL&gubun=univ_list&searchSchulNm="+encodedSchool;
+        String urlStr = "https://www.career.go.kr/cnet/openapi/getOpenApi.json?apiKey="+careerApiKey+"&svcType=api&svcCode=SCHOOL&gubun=univ_list&perPage=30&searchSchulNm="+encodedSchool;
         URL url = new URI(urlStr).toURL();
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setRequestMethod("GET");
@@ -76,12 +79,12 @@ public class SignUpService {
         br.close();
         urlConnection.disconnect();
         String re = result.toString();
-        SignUpResponseDto.SchoolRet parsedSchool = extractSchoolNameFromXML(re);
+        List<SignUpResponseDto.SchoolRet> parsedSchool = extractSchoolNameFromXML(re);
         return parsedSchool;
     }
 
 //    받아온 학교 정보에서 이름만 parsing
-public SignUpResponseDto.SchoolRet extractSchoolNameFromXML(String xmlData) throws Exception {
+public List<SignUpResponseDto.SchoolRet> extractSchoolNameFromXML(String xmlData) throws Exception {
     // XML 데이터를 파싱하기 위한 DocumentBuilder 인스턴스 생성
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     DocumentBuilder builder = factory.newDocumentBuilder();
@@ -89,21 +92,29 @@ public SignUpResponseDto.SchoolRet extractSchoolNameFromXML(String xmlData) thro
     // String 형태의 XML 데이터를 Document 객체로 변환
     Document doc = builder.parse(new InputSource(new StringReader(xmlData)));
 
-    // <schoolName> 태그를 가진 모든 요소를 찾음
+    // <schoolName>,<adres> 태그를 가진 모든 요소를 찾음
     NodeList schoolNameList = doc.getElementsByTagName("schoolName");
     NodeList regionList = doc.getElementsByTagName("adres");
 
-    // 첫 번째 <schoolName> 요소의 값을 추출
-    if (schoolNameList.getLength() > 0) {
-        Element schoolNameElement = (Element) schoolNameList.item(0);
-        Element regionElement = (Element) regionList.item(0);
-        return SignUpResponseDto.SchoolRet.builder()
+    List<SignUpResponseDto.SchoolRet> schools = new ArrayList<>();
+
+    for (int i = 0; i < schoolNameList.getLength(); i++) {
+        Element schoolNameElement = (Element) schoolNameList.item(i);
+        Element regionElement = (Element) regionList.item(i);
+
+        SignUpResponseDto.SchoolRet school = SignUpResponseDto.SchoolRet.builder()
                 .school(schoolNameElement.getTextContent())
                 .region(regionElement.getTextContent())
                 .build();
-    } else {
+
+        schools.add(school);
+    }
+
+    if (schools.isEmpty()) {
         throw new CustomException(ExceptionCode.SCHOOL_NOT_FOUND);
     }
+
+    return schools;
 }
 
     public void createPath(SignUpResponseDto.PathReq req) {
