@@ -51,7 +51,7 @@ public class CareerService {
                 .map(result -> {
                     String type = (String) result[0];
                     long count = (Long) result[1];
-                    double percentage = totalCareers > 0 ? (double) count / totalCareers * 100 : 0;
+                    long percentage = totalCareers > 0 ? Math.round((double) count / totalCareers * 100) : 0;
                     return new CareerRequestDto.CareerSummary(type, count, percentage);
                 })
                 .collect(Collectors.toList());

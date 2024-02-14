@@ -19,9 +19,15 @@ public class CareerRequestDto {
         private String type;
         private String careerName;
         private List<String> categories;
+        private List<String> interests;
         private LocalDate start;
         private LocalDate end;
         private int month;
+        private String monthForSelect;
+        private String scale;
+        private String jobRole;
+        private LocalDate earnDate;
+        private String details;
     }
 
     @Getter
@@ -29,7 +35,7 @@ public class CareerRequestDto {
     public static class CareerSummary {
         private String type;
         private long count;
-        private double percentage;
+        private long percentage;
     }
 
     @Getter

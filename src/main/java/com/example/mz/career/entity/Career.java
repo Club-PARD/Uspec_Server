@@ -31,9 +31,21 @@ public class Career {
     @CollectionTable(name = "career_categories", joinColumns = @JoinColumn(name = "careerId"))
     @Column(name = "category")
     private List<String> categories;
+
+    @ElementCollection
+    @CollectionTable(name = "interests", joinColumns = @JoinColumn(name = "careerId"))
+    @Column(name = "interest")
+    private List<String> interests;
+
     private LocalDate start;
     private LocalDate end;
     private int month;
+    private String monthForSelect;
+    private String scale;
+    private String jobRole;
+    private LocalDate earnDate;
+    @Column(columnDefinition = "TEXT",length = 1000)
+    private String details;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     @JsonIgnore
@@ -44,8 +56,15 @@ public class Career {
                 .careerName(request.getCareerName())
                 .type(request.getType())
                 .categories(request.getCategories())
+                .interests(request.getInterests())
                 .start(request.getStart())
                 .end(request.getEnd())
+                .month(request.getMonth())
+                .monthForSelect(request.getMonthForSelect())
+                .scale(request.getScale())
+                .jobRole(request.getJobRole())
+                .earnDate(request.getEarnDate())
+                .details(request.getDetails())
                 .build();
     }
 }
