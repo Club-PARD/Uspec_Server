@@ -45,6 +45,7 @@ public class UserService {
     public UserResponseDto.ImageRet updateImage(Long userId, MultipartFile image) throws IOException {
         User user = userRepo.findById(userId).orElseThrow(() -> new CustomException(ExceptionCode.USERID_NOT_FOUND));
         String imageUrl = s3Service.upload(image, "UserProfileImage");
+//        따로 이미지 폴더 저장하는 방법
 //        String imageUrl = s3Service.upload(image, "image"+userId.toString());
         user.setImage(imageUrl);
         userRepo.save(user);
