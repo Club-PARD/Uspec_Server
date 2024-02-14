@@ -15,6 +15,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,6 +32,12 @@ public class CareerService {
         user.setRole("ROLE_CAREER"); //이력 작성하면 ROLE_CAREER로 변경
         Career career = Career.create(careerRequestDto);
         career.setUser(user);
+        if(career.getStart()!=null && career.getEnd()!=null){
+            long monthsBetween = ChronoUnit.MONTHS.between(career.getStart(), career.getEnd());
+            career.setMonth((int) monthsBetween);
+        } else {
+            career.setMonth(0);
+        }
         careerRepo.save(career);
     }
 

@@ -77,4 +77,18 @@ public class UserRequestDto {
             if(image != null) user.setImage(this.image);
         }
     }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    public static class SchoolReq{
+        private String school;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    public static class MajorReq{
+        private String school;
+    }
 }

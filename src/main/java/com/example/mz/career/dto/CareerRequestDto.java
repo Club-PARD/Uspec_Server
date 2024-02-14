@@ -21,6 +21,7 @@ public class CareerRequestDto {
         private List<String> categories;
         private LocalDate start;
         private LocalDate end;
+        private int month;
     }
 
     @Getter

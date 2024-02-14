@@ -1,4 +1,4 @@
-package com.example.mz.path.dto;
+package com.example.mz.sigunUp.dto;
 
 
 import lombok.AllArgsConstructor;
@@ -8,7 +8,7 @@ import lombok.Setter;
 
 import java.util.List;
 
-public class PathResponseDto {
+public class SignUpResponseDto {
 
     @Getter
     @Builder
@@ -30,5 +30,18 @@ public class PathResponseDto {
     public static class PathReq{
         private String path;
         private List<String> pathCategory;
+    }
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    public static class SchoolReq{
+        private String school;
+    }
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    public static class SchoolRet{
+        private String school;
+        private String region;
     }
 }

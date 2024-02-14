@@ -33,6 +33,7 @@ public class Career {
     private List<String> categories;
     private LocalDate start;
     private LocalDate end;
+    private int month;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     @JsonIgnore

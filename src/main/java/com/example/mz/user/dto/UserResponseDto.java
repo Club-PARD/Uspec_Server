@@ -45,4 +45,12 @@ public class UserResponseDto {
         private String enroll;
         private Long careerCount;
     }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    public static class SchoolRet{
+        private String school;
+        private String region;
+    }
 }
