@@ -19,10 +19,10 @@ public class SignUpController {
     private final SignUpService signUpService;
     private final UserService userService;
 
-    @GetMapping("/option")
+    @GetMapping("/{option}")
     @Operation(summary = "분야에 대한 카테고리 조회")
-    public ResponseEntity<SignUpResponseDto.PathRet> readPath(@RequestParam("path") String path){
-        SignUpResponseDto.PathRet ret = signUpService.readPath(path);
+    public ResponseEntity<SignUpResponseDto.PathRet> readPath(@PathVariable String option) throws IOException, URISyntaxException {
+        SignUpResponseDto.PathRet ret = signUpService.readPath(option);
         return new ResponseEntity<>(ret, HttpStatus.OK);
     }
     @PostMapping("/{school}")

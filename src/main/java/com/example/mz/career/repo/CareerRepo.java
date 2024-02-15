@@ -27,6 +27,16 @@ public interface CareerRepo extends JpaRepository<Career,Long> {
             " group by category" +
             " order by count desc")
     List<Object[]> findTopCategoriesByType(@Param("type") String type, Pageable pageable);
+// 인턴 찾는 쿼리
+    @Query(value = "select c.careerName ,c.month, c.jobRole from Career c where c.type = :type group by c.careerName, c.month, c.jobRole order by count(c) desc")
+    List<Object[]> findTopCareerNamesByType(@Param("type") String type, Pageable pageable);
+
+//    자격증 찾는 쿼리
+    @Query(value = "select c.careerName,count(c) from Career c where c.type = :type group by c.careerName order by count(c) desc")
+    List<Object[]> findTopCertificationByType(@Param("type") String type, Pageable pageable);
+
+    @Query(value = "select count(c) from Career c where c.type = :type")
+    Long findCountByType(@Param("type") String type);
 
     // 스펙갯수 제일 많은 3명의 user 찾는 쿼리
     @Query(value = "SELECT u.id, COUNT(c) AS careerCount FROM User u JOIN u.career c where u.path = :path GROUP BY u.id order by careerCount DESC ")
