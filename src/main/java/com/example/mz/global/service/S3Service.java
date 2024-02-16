@@ -25,7 +25,6 @@ public class S3Service {
 
     public String upload(MultipartFile multipartFile, String dirName) throws IOException {
         File uploadFile = convert(multipartFile).orElseThrow(() -> new CustomException(ExceptionCode.FILE_TRANSFORM_FAILED));
-
         return upload(uploadFile, dirName);
     }
 
@@ -56,9 +55,7 @@ public class S3Service {
         File convertFile = new File(file.getOriginalFilename());
 //        해당 경로에 파일이 없으면 새로 생성
         if (convertFile.createNewFile()) { // 해당 경로에 파일이 없을 경우, 새 파일 생성
-
             try (FileOutputStream fos = new FileOutputStream(convertFile)) {
-
                 // multipartFile의 내용을 byte로 가져와서 write
                 fos.write(file.getBytes());
             }
