@@ -24,7 +24,9 @@ public class User {
     private String enroll;
     private Boolean graduate;
     private Long age;
-    private float grade;
+    private String grade;
+    private Boolean gradeOpen;
+    private Boolean isThree;
     private String major;
     private String path;
     private Boolean military;
@@ -47,27 +49,12 @@ public class User {
                 .graduate(request.isGraduate())
                 .age(request.getAge())
                 .grade(request.getGrade())
+                .gradeOpen(request.isGradeOpen())
+                .isThree(request.isThree())
                 .major(request.getMajor())
                 .path(request.getPath())
                 .military(request.isMilitary())
                 .role("ROLE_USER")
-                .image(request.getImage())
-                .build();
-    }
-
-    public static User update(final UserRequestDto.Update request){
-        return User.builder()
-                .name(request.getName())
-                .email(request.getEmail())
-                .school(request.getSchool())
-                .semester(request.getSemester())
-                .enroll(request.getEnroll())
-                .graduate(request.getGraduate())
-                .age(request.getAge())
-                .grade(request.getGrade())
-                .major(request.getMajor())
-                .path(request.getPath())
-                .military(request.getMilitary())
                 .image(request.getImage())
                 .build();
     }
@@ -79,7 +66,10 @@ public class User {
                 .school(user.getSchool())
                 .semester(user.getSemester())
                 .enroll(user.getEnroll())
+                .grade(user.getGrade())
+                .gradeOpen(user.getGradeOpen())
                 .graduate(user.getGraduate())
+                .isThree(user.getIsThree())
                 .major(user.getMajor())
                 .path(user.getPath())
                 .careers(user.getCareer())

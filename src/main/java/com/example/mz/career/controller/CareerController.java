@@ -24,9 +24,9 @@ public class CareerController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/{id}/type/top3")
+    @GetMapping("/{id}/type/top5")
 //    @PreAuthorize("hasRole('ROLE_CAREER')")
-    @Operation(description = "user의 분야에서 이력 상위 3개와 전체 대비 비율을 가져오는 컨트롤러")
+    @Operation(description = "user의 분야에서 이력 5개 순위와 전체 대비 비율을 가져오는 컨트롤러")
     public ResponseEntity<List<CareerRequestDto.CareerSummary>> getTop3WithPercentage(@PathVariable Long id){
         List<CareerRequestDto.CareerSummary> topCareersWithPercentage = careerService.getTop3WithPercentage(id);
         return ResponseEntity.ok(topCareersWithPercentage);
@@ -37,6 +37,27 @@ public class CareerController {
     public ResponseEntity<List<CareerRequestDto.CareerNameSummary>> getTopTypeWithTop3CareerName(@PathVariable Long id){
         List<CareerRequestDto.CareerNameSummary> topTypeWithTop3CareerName = careerService.getTopTypeWithTop3CareerName(id);
         return ResponseEntity.ok(topTypeWithTop3CareerName);
+    }
+
+    @GetMapping("/{id}/category/{type}/top3")
+    @Operation(description = "공모전, 대외활동, 교내활동 중 한 분야 상위 3개 카테고리 가져오는 컨트롤러")
+    public ResponseEntity<List<CareerRequestDto.CareerNameSummary>> getTop3Category(@PathVariable Long id,@PathVariable String type){
+        List<CareerRequestDto.CareerNameSummary> top3Category = careerService.getTop3CategoryPerType(id,type);
+        return ResponseEntity.ok(top3Category);
+    }
+
+    @GetMapping("/{id}/intern/top3")
+    @Operation(description = "user의 분야에서 인턴 상위 3개 가져오는 컨트롤러")
+    public ResponseEntity<List<CareerRequestDto.CareerNameSummary>> getTop3Intern(@PathVariable Long id){
+        List<CareerRequestDto.CareerNameSummary> top3Intern = careerService.getTop3CategoryForIntern(id);
+        return ResponseEntity.ok(top3Intern);
+    }
+
+    @GetMapping("/{id}/certification/top3")
+    @Operation(description = "user의 분야에서 자격증 상위 3개 가져오는 컨트롤러")
+    public ResponseEntity<List<CareerRequestDto.CareerNameSummary>> getTop3Certification(@PathVariable Long id){
+        List<CareerRequestDto.CareerNameSummary> top3Certification = careerService.getTop3Certification(id);
+        return ResponseEntity.ok(top3Certification);
     }
 
     @GetMapping("/{id}/rank/spec")

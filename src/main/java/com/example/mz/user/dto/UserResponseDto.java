@@ -16,25 +16,8 @@ public class UserResponseDto {
 
     @Getter
     @Builder
-    public static class PathRet{
-        private List<String> pathCategory;
-    }
-
-    @Getter
-    @Builder
     public static class ImageRet{
         private String imageUrl;
-    }
-
-    @Getter
-    @Builder
-    @AllArgsConstructor
-    public static class CareerInUser{
-        private String careerName;
-        private String type;
-        private String category;
-        private String start;
-        private String end;
     }
 
     @Getter
@@ -46,11 +29,4 @@ public class UserResponseDto {
         private Long careerCount;
     }
 
-    @Getter
-    @Builder
-    @AllArgsConstructor
-    public static class SchoolRet{
-        private String school;
-        private String region;
-    }
 }

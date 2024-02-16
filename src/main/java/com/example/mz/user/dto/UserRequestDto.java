@@ -14,6 +14,7 @@ public class UserRequestDto {
     @Getter
     @Setter
     @Builder
+    @AllArgsConstructor
     public static class Create{
         private String name;
         private String email;
@@ -22,12 +23,15 @@ public class UserRequestDto {
         private String enroll;
         private boolean graduate;
         private Long age;
-        private float grade;
+        private String grade;
+        private boolean gradeOpen;
+        private boolean isThree;
         private String major;
         private String path;
         private boolean military;
         private String role;
         private String image;
+
     }
 
     @Getter
@@ -41,6 +45,9 @@ public class UserRequestDto {
         private Long semester;
         private String enroll;
         private boolean graduate;
+        private String grade;
+        private boolean gradeOpen;
+        private boolean isThree;
         private String major;
         private String path;
         private String image;
@@ -57,7 +64,9 @@ public class UserRequestDto {
         private String enroll;
         private Boolean graduate;
         private Long age;
-        private float grade;
+        private String grade;
+        private Boolean gradeOpen;
+        private Boolean isThree;
         private String major;
         private String path;
         private Boolean military;
@@ -70,7 +79,9 @@ public class UserRequestDto {
             if (enroll != null) user.setEnroll(this.enroll);
             if(graduate != null) user.setGraduate(this.graduate);
             if (age != null) user.setAge(this.age);
-            if (grade != 0) user.setGrade(this.grade);
+            if (grade != null) user.setGrade(this.grade);
+            if (gradeOpen != null) user.setGradeOpen(this.gradeOpen);
+            if (isThree != null) user.setIsThree(this.isThree);
             if (major != null) user.setMajor(this.major);
             if (path != null) user.setPath(this.path);
             if(military != null ) user.setMilitary(this.military);
@@ -78,17 +89,4 @@ public class UserRequestDto {
         }
     }
 
-    @Getter
-    @Builder
-    @AllArgsConstructor
-    public static class SchoolReq{
-        private String school;
-    }
-
-    @Getter
-    @Builder
-    @AllArgsConstructor
-    public static class MajorReq{
-        private String school;
-    }
 }

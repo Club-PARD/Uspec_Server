@@ -10,6 +10,7 @@ import com.example.mz.user.repo.UserRepo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CareerService {
     private final UserRepo userRepo;
     private final CareerRepo careerRepo;
@@ -44,7 +46,7 @@ public class CareerService {
     public List<CareerRequestDto.CareerSummary> getTop3WithPercentage(Long userId) {
         User user = userRepo.findById(userId).orElseThrow(() -> new CustomException(ExceptionCode.USERID_NOT_FOUND));
         long totalCareers = careerRepo.count(); //careerRepo에 있는 career의 총 갯수
-        Pageable topThree =  PageRequest.of(0, 3); //첫번째 페이지에서 3개의 Pageable 객체를 가져오는 요청객체
+        Pageable topThree =  PageRequest.of(0, 5); //첫번째 페이지에서 3개의 Pageable 객체를 가져오는 요청객체
         List<Object[]> results = careerRepo.findTopTypes(user.getPath(),topThree);
 
         return results.stream() //results를 stream으로 변환
@@ -64,15 +66,70 @@ public class CareerService {
         if (topTypeResult.isEmpty()) {
             return Collections.emptyList();
         }
-        String mostType = (String) topTypeResult.get(0)[0];
-
         Pageable top3Page = PageRequest.of(0, 3);
+        String mostType = (String) topTypeResult.get(0)[0];
+        if(mostType.equals("인턴")){
+            return getTop3CategoryForIntern(userId);
+        }
+        else if(mostType.equals("자격증")){
+            return getTop3Certification(userId);
+        }
         List<Object[]> top3Categories = careerRepo.findTopCategoriesByType(mostType, top3Page);
+        return getTop3CategoryPerType(userId,mostType);
+    }
+
+    public List<CareerRequestDto.CareerNameSummary> getTop3CategoryPerType(Long userId,String type) {
+        User user = userRepo.findById(userId).orElseThrow(() -> new CustomException(ExceptionCode.USERID_NOT_FOUND));
+        Pageable top3Page = PageRequest.of(0, 3);
+        List<Object[]> top3Categories = careerRepo.findTopCategoriesByType(type, top3Page);
         return top3Categories.stream()
                 .map(objects -> {
                     String category = (String) objects[0];
-                    long count = (Long) objects[1];
-                    return new CareerRequestDto.CareerNameSummary(mostType,category, count);
+                    Long count = (Long) objects[1];
+                    Long total = careerRepo.findCountByType(type);
+                    Long mean = total /userRepo.count();
+                    return CareerRequestDto.CareerNameSummary.forGeneralInfo(type,category, count, mean);
+                }).collect(Collectors.toList());
+    }
+//인턴 상위 3개 가져오는 api
+    public List<CareerRequestDto.CareerNameSummary> getTop3CategoryForIntern(Long userId) {
+        User user = userRepo.findById(userId).orElseThrow(() -> new CustomException(ExceptionCode.USERID_NOT_FOUND));
+        String type = "인턴";
+        Pageable top3Page = PageRequest.of(0, 3);
+        List<Object[]> top3Categories = careerRepo.findTopCareerNamesByType(type, top3Page);
+        return top3Categories.stream()
+                .map(objects -> {
+                    String careerName = (String) objects[0];
+                    Integer monthForSelection = (Integer) objects[1];
+                    String monthForDisplay;
+                    if(monthForSelection <3){
+                        monthForDisplay= "3개월 이하";
+                    } else if(monthForSelection <6 && monthForSelection >=3){
+                        monthForDisplay= "3~6개월";
+                    } else if(monthForSelection <12 && monthForSelection >=6){
+                        monthForDisplay= "6개월~1년";
+                    } else {
+                        monthForDisplay= "1년 이상";
+                    }
+                    String role = (String) objects[2];
+                    Long total = careerRepo.findCountByType(type);
+                    Long mean = total / userRepo.count();
+                    return CareerRequestDto.CareerNameSummary.forInternInfo(type, careerName, monthForDisplay, mean, role);
+                }).collect(Collectors.toList());
+    }
+
+//    자격증 제일 많이 딴 순서대로 3개 보여주는 api
+    public List<CareerRequestDto.CareerNameSummary> getTop3Certification(Long userId) {
+        User user = userRepo.findById(userId).orElseThrow(() -> new CustomException(ExceptionCode.USERID_NOT_FOUND));
+        String type = "자격증";
+        Pageable top3Page = PageRequest.of(0, 3);
+        List<Object[]> top3Categories = careerRepo.findTopCertificationByType(type,top3Page);
+        return top3Categories.stream()
+                .map(objects -> {
+                    String careerName = (String) objects[0];
+                    Long count = (Long) objects[1];
+                    Long mean = count / userRepo.count();
+                    return CareerRequestDto.CareerNameSummary.forCertificationInfo(careerName, count, mean);
                 }).collect(Collectors.toList());
     }
 

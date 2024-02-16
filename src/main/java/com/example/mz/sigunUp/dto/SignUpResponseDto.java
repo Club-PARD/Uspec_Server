@@ -14,7 +14,7 @@ public class SignUpResponseDto {
     @Builder
     @AllArgsConstructor
     public static class PathRequest{
-        private String path;
+         String path;
     }
     @Getter
     @Builder
